@@ -6,6 +6,8 @@ using System.Text;
 using System.Collections.Generic;
 using Windows.UI.Popups;
 using System;
+using System.Net.Http;
+using System.Xml;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -37,9 +39,9 @@ namespace RSSReader
             {
                 var feeds = await feedController.GetFeeds();
                 listRssFeeds = feeds;
-
+        
             }
-            catch (Exception ex) when (ex is  UriFormatException || ex is NotRssFeedsLinkException)
+            catch (Exception ex) when (ex is  UriFormatException || ex is HttpRequestException || ex is XmlException)
             {
                 var dialog = new MessageDialog("Invalid link");
                 dialog.ShowAsync();

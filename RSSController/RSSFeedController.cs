@@ -50,7 +50,7 @@ namespace RSSController
                     ImageUrl = item.Element(imageLinkTag)?.Attribute("url")?.Value
                 });
             }
-            this.AllFeeds = feeds.Count != 0 ? new List<RSSFeed>(feeds) : throw new NotRssFeedsLinkException();
+            this.AllFeeds = new List<RSSFeed>(feeds);
             return feeds;
         }
 
