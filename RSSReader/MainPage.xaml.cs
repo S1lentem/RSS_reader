@@ -17,7 +17,7 @@ namespace RSSReader
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private string defaultRSS = "http://rss.garant.ru/hotlaw/bashkor/";
+        private string defaultRSS = "https://news.tut.by/rss/society.rss";
 
         public MainPage()
         {

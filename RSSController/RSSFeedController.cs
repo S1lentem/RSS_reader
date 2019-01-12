@@ -16,6 +16,7 @@ namespace RSSController
         private readonly string descriptionTag = "description";
         private readonly string dateTag = "pubDate";
         private readonly string linkTag = "link";
+        private readonly string imageLinkTag = "enclosure";
 
         private string url;
 
@@ -43,9 +44,10 @@ namespace RSSController
                 feeds.Add(new RSSFeed()
                 {
                     Title = item.Element(titleTag)?.Value,
-                    Description = item.Element(descriptionTag)?.Value,
+                    Description = item.Element(descriptionTag)?.Value?.ClearFromHtml(),
                     Date = DateTime.Parse(item.Element(dateTag)?.Value),
-                    Link = item.Element(linkTag)?.Value
+                    Link = item.Element(linkTag)?.Value,
+                    ImageUrl = item.Element(imageLinkTag)?.Attribute("url")?.Value
                 });
             }
             this.AllFeeds = new List<RSSFeed>(feeds);

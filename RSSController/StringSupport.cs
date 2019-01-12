@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RSSController
@@ -20,5 +21,8 @@ namespace RSSController
             }
             return false;
         }
+
+        public static string ClearFromHtml(this string str) => Regex.Replace(str, "<[^>]*(>|$)", string.Empty);
     } 
+
 }

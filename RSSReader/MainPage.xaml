@@ -30,11 +30,15 @@
                       Grid.ColumnSpan="2" Grid.Row="3">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Red" BorderThickness="2" CornerRadius="5" Margin="0,5,0,5">
+                    <Border  BorderThickness="3" CornerRadius="5" Margin="0,5,0,5" Background="DarkSlateGray">
+                        <Border.BorderBrush >
+                            <SolidColorBrush Color="Gray" Opacity="0.4"/>
+                        </Border.BorderBrush>
                     <StackPanel Margin="0,5,0,5" >
                         <TextBlock TextWrapping="Wrap" TextAlignment="Center" FontWeight="Bold" MaxLines="2" 
                                        TextTrimming="WordEllipsis" Text="{Binding Title}" FontSize="18"/>
-                        <TextBlock Text="{Binding Date}" TextAlignment="Center" FontStyle="Italic" Margin="0, 10, 0, 0" FontSize="13"/>
+                            <Image Source="{Binding ImageUrl}"/>
+                            <TextBlock Text="{Binding Date}" TextAlignment="Center" FontStyle="Italic" Margin="0, 10, 0, 0" FontSize="13"/>
                         <TextBlock Text="{Binding Description}" Margin="2, 0, 2, 0" TextWrapping="Wrap" />
                     </StackPanel>
                     </Border>
