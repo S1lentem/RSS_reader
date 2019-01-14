@@ -8,42 +8,38 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-
-    <Grid Margin="5, 10, 5, 10" HorizontalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80*" />
-            <ColumnDefinition Width="20*"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*" MinHeight="20"/>
-            <RowDefinition Height="5*" MinHeight="40"/>
-            <RowDefinition Height="5*" MinHeight="40"/>
-            <RowDefinition Height="85*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Center" Text="RSS Source" Grid.ColumnSpan="2" Grid.Row="0"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1" x:Name="RssFeedsLink"/>
-        <Button HorizontalAlignment="Stretch" Content="Save" VerticalAlignment="Stretch" 
-                    Grid.Column="1" Grid.Row="1" Margin="1"/>
-        <Button Content="Load" HorizontalAlignment="Stretch" Click="LoadButtonClick" 
-                    Grid.ColumnSpan="2" Grid.Row="2" Margin="1"/>
-        <ListView x:Name="RssFeeds" RelativePanel.Below="LoadPanel" HorizontalAlignment="Stretch"
-                      Grid.ColumnSpan="2" Grid.Row="3">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border  BorderThickness="3" CornerRadius="5" Margin="0,5,0,5" Background="DarkSlateGray">
-                        <Border.BorderBrush >
-                            <SolidColorBrush Color="Gray" Opacity="0.4"/>
-                        </Border.BorderBrush>
-                    <StackPanel Margin="0,5,0,5" >
-                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" FontWeight="Bold" MaxLines="2" 
-                                       TextTrimming="WordEllipsis" Text="{Binding Title}" FontSize="18"/>
-                            <Image Source="{Binding ImageUrl}" Margin="0, 10, 0, 10"/>
-                            <TextBlock Text="{Binding Date}" TextAlignment="Center" FontStyle="Italic" Margin="0, 0, 0, 5" FontSize="13"/>
-                        <TextBlock Text="{Binding Description}" Margin="2, 0, 2, 0" TextWrapping="Wrap" />
-                    </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <RelativePanel>
+            <Button RelativePanel.AlignBottomWithPanel="True" FontFamily="Segoe MDL2 Assets" FontSize="36" 
+                     Content="&#xE700;" Click="ShowMenuClick" x:Name="menuButton"/>
+            <TextBlock Name="titleInMenu" RelativePanel.RightOf="menuButton" FontSize="26" FontWeight="Bold" Margin="30, 5, 0, 0">
+                RSS-Reader
+            </TextBlock>
+        </RelativePanel>
+        <SplitView Grid.Row="1" OpenPaneLength="200" Name="menu">
+            <SplitView.Pane>
+            <ListBox SelectionMode="Single" SelectionChanged="SelectItemFromMenu">
+                <ListBoxItem Name="Home">
+                    <TextBlock>Home</TextBlock>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock>News</TextBlock>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock>RSS-Feeds settings</TextBlock>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock>About</TextBlock>
+                </ListBoxItem>
+            </ListBox>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Frame Name="contentFrame"/>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
-</Page>
+</Page> 
