@@ -32,8 +32,15 @@ namespace RSSController
 
         public RSSFeedController(string url) => this.url = url;
 
+        public RSSFeedController() : this(null) { }
+
         private async Task<IEnumerable<RSSFeed>> LoadFeeds()
         {
+            if (URL == null)
+            {
+                return null;
+            }
+
             var feeds = new List<RSSFeed>();
 
             var client = new HttpClient();
@@ -62,5 +69,7 @@ namespace RSSController
             }
             return this.AllFeeds;
         }
+
+        
     }
 }

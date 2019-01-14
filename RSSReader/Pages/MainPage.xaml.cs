@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using RSSReader.Pages;
+using RSSController;
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace RSSReader.Pages
@@ -23,9 +24,12 @@ namespace RSSReader.Pages
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private readonly RSSFeedController feedController;
+
         public MainPage()
         {
             this.InitializeComponent();
+            this.feedController = new RSSFeedController();
         }
 
         private void SelectItemFromMenu(object sender, SelectionChangedEventArgs e)
@@ -33,14 +37,15 @@ namespace RSSReader.Pages
             if (homeItem.IsSelected)
             {
                 contentFrame.Navigate(typeof(HomePage));
+            
             } 
             else if (newsItem.IsSelected)
             {
-                contentFrame.Navigate(typeof(NewsPage));
+                contentFrame.Navigate(typeof(NewsPage), feedController);
             }
             else if (settingsItem.IsSelected)
             {
-                contentFrame.Navigate(typeof(SettingsPage));
+                contentFrame.Navigate(typeof(SettingsPage), feedController);
             }
             else if (aboutItem.IsSelected)
             {

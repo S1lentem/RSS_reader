@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Xml;
 using Windows.System;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -21,7 +22,7 @@ namespace RSSReader
     /// </summary>
     public sealed partial class NewsPage : Page
     {
-        private IEnumerable<RSSFeed> listRssFeeds;
+        private RSSFeedController rssFeedController;
 
         public NewsPage()
         {
@@ -29,36 +30,15 @@ namespace RSSReader
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Encoding.GetEncoding("windows-1254");
+           
         }
 
-        private async void RssSourceKeyDown(object sender, KeyRoutedEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
-            {
-                var link = RssFeedsLink.Text.CreateLink();
+            this.rssFeedController = e.Parameter as RSSFeedController;
+            RssFeeds.ItemsSource = await rssFeedController.GetFeeds();
 
-                // Removes keyboard when pressed enter
-                Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.IsInputEnabled = false;
-                Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.IsInputEnabled = true;
-
-                RSSFeedController feedController = new RSSFeedController(link);
-
-                try
-                {
-                    var feeds = await feedController.GetFeeds();
-                    listRssFeeds = feeds;
-
-                }
-                catch (Exception ex) when (ex is UriFormatException || ex is HttpRequestException || ex is XmlException)
-                {
-                    var dialog = new MessageDialog("Invalid link");
-                    dialog.ShowAsync();
-                }
-                finally
-                {
-                    RssFeeds.ItemsSource = listRssFeeds;
-                }
-            }
+            base.OnNavigatedTo(e);
         }
     }
 }
