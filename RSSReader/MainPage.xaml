@@ -23,16 +23,16 @@
         <SplitView Grid.Row="1" OpenPaneLength="200" Name="menu">
             <SplitView.Pane>
             <ListBox SelectionMode="Single" SelectionChanged="SelectItemFromMenu">
-                <ListBoxItem Name="Home">
+                <ListBoxItem Name="homeItem">
                     <TextBlock>Home</TextBlock>
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem Name="newsItem">
                     <TextBlock>News</TextBlock>
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem Name="settingsItem">
                     <TextBlock>RSS-Feeds settings</TextBlock>
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem Name="aboutItem">
                     <TextBlock>About</TextBlock>
                 </ListBoxItem>
             </ListBox>

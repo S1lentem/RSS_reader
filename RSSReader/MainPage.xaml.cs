@@ -29,7 +29,7 @@ namespace RSSReader
 
         private void SelectItemFromMenu(object sender, SelectionChangedEventArgs e)
         {
-            
+            if ()
         }
 
         private void ShowMenuClick(object sender, RoutedEventArgs e) => menu.IsPaneOpen = !menu.IsPaneOpen;
