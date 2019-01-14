@@ -13,9 +13,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using RSSReader.Pages;
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace RSSReader
+namespace RSSReader.Pages
 {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
@@ -29,7 +30,23 @@ namespace RSSReader
 
         private void SelectItemFromMenu(object sender, SelectionChangedEventArgs e)
         {
-            if ()
+            if (homeItem.IsSelected)
+            {
+                contentFrame.Navigate(typeof(HomePage));
+            } 
+            else if (newsItem.IsSelected)
+            {
+                contentFrame.Navigate(typeof(NewsPage));
+            }
+            else if (settingsItem.IsSelected)
+            {
+                contentFrame.Navigate(typeof(SettingsPage));
+            }
+            else if (aboutItem.IsSelected)
+            {
+                contentFrame.Navigate(typeof(AboutPage));
+            }
+            menu.IsPaneOpen = false;
         }
 
         private void ShowMenuClick(object sender, RoutedEventArgs e) => menu.IsPaneOpen = !menu.IsPaneOpen;
