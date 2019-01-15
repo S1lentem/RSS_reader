@@ -1,4 +1,5 @@
 ﻿using RSSController;
+using RSSReader.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace RSSReader.Pages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        private RSSFeedController rssFeedController;
+        private IRSSFeedsManageable manageable;
 
         public SettingsPage()
         {
@@ -36,7 +37,7 @@ namespace RSSReader.Pages
         {
             if (e.Key == VirtualKey.Enter)
             {
-                this.rssFeedController.URL = rssFeedTextBox.Text.CreateLink();
+                manageable.SetNewsSource(rssFeedTextBox.Text.CreateLink());
 
                 // Removes keyboard when pressed enter
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.IsInputEnabled = false;
@@ -46,8 +47,14 @@ namespace RSSReader.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var rssFeedController = e.Parameter as RSSFeedController;
-            this.rssFeedController = rssFeedController;
+            if (e.Parameter is IRSSFeedsManageable manageable)
+            {
+                this.manageable = manageable;  
+            }
+            else
+            {
+                throw new ArgumentException("NavigationEvenetArgs.Parameter not implemented IRSSFeedsManageable");
+            }
             base.OnNavigatedTo(e);
         }
 

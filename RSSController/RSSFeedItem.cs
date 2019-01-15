@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RSSController
 {
-    public class RSSFeed
+    public class RSSFeedItem
     {
         public string Title { get; set; }
         public string Description { get; set; }

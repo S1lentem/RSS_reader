@@ -18,58 +18,53 @@ namespace RSSController
         private readonly string linkTag = "link";
         private readonly string imageLinkTag = "enclosure";
 
+        private readonly string urlAttribute = "url";
+
         private string url;
+        private IEnumerable<RSSFeedItem> news;
+
 
         public string URL { get => url;
             set
             {
                 url = value;
-                AllFeeds = null;
+                news = null;
             }
         }
-        public List<RSSFeed> AllFeeds { get; private set; } = null;
-
-
+        
         public RSSFeedController(string url) => this.url = url;
 
         public RSSFeedController() : this(null) { }
 
-        private async Task<IEnumerable<RSSFeed>> LoadFeeds()
+        private async Task<IEnumerable<RSSFeedItem>> LoadFeeds()
         {
-            if (URL == null)
-            {
-                return null;
-            }
-
-            var feeds = new List<RSSFeed>();
+            var feeds = new List<RSSFeedItem>();
 
             var client = new HttpClient();
             XDocument document = XDocument.Load(await client.GetStreamAsync(URL));
 
             foreach (var item in document.Descendants(itemSection))
             {
-                feeds.Add(new RSSFeed()
+                feeds.Add(new RSSFeedItem()
                 {
                     Title = item.Element(titleTag)?.Value,
                     Description = item.Element(descriptionTag)?.Value?.ClearFromHtml(),
                     Date = DateTime.Parse(item.Element(dateTag)?.Value),
                     Link = item.Element(linkTag)?.Value,
-                    ImageUrl = item.Element(imageLinkTag)?.Attribute("url")?.Value
+                    ImageUrl = item.Element(imageLinkTag)?.Attribute(urlAttribute)?.Value
                 });
             }
-            this.AllFeeds = new List<RSSFeed>(feeds);
+            this.news = new List<RSSFeedItem>(feeds);
             return feeds;
         }
 
-        public async Task<IEnumerable<RSSFeed>> GetFeeds()
+        public async Task<IEnumerable<RSSFeedItem>> GetFeeds()
         {
-            if (this.AllFeeds == null)
+            if (this.news == null && this.URL != null)
             {
                 return await LoadFeeds();
             }
-            return this.AllFeeds;
+            return this.news;
         }
-
-        
     }
 }

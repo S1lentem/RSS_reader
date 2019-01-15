@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
-using RSSReader.Pages;
 using RSSController;
+using RSSReader.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace RSSReader.Pages
@@ -22,7 +12,7 @@ namespace RSSReader.Pages
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, IRSSFeedsManageable 
     {
         private readonly RSSFeedController feedController;
 
@@ -31,6 +21,11 @@ namespace RSSReader.Pages
             this.InitializeComponent();
             this.feedController = new RSSFeedController();
         }
+
+        public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync() => await feedController.GetFeeds();
+
+        public void SetNewsSource(string url) => feedController.URL = url;
+        
 
         private void SelectItemFromMenu(object sender, SelectionChangedEventArgs e)
         {
@@ -41,11 +36,11 @@ namespace RSSReader.Pages
             } 
             else if (newsItem.IsSelected)
             {
-                contentFrame.Navigate(typeof(NewsPage), feedController);
+                contentFrame.Navigate(typeof(NewsPage), this);
             }
             else if (settingsItem.IsSelected)
             {
-                contentFrame.Navigate(typeof(SettingsPage), feedController);
+                contentFrame.Navigate(typeof(SettingsPage), this);
             }
             else if (aboutItem.IsSelected)
             {

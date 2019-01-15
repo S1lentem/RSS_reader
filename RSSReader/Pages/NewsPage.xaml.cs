@@ -1,16 +1,10 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
 using RSSController;
 using System.Text;
-using System.Collections.Generic;
-using Windows.UI.Popups;
-using System;
-using System.Net.Http;
-using System.Xml;
-using Windows.System;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using RSSReader.Interfaces;
+using System;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -22,8 +16,6 @@ namespace RSSReader
     /// </summary>
     public sealed partial class NewsPage : Page
     {
-        private RSSFeedController rssFeedController;
-
         public NewsPage()
         {
             this.InitializeComponent();
@@ -35,9 +27,15 @@ namespace RSSReader
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.rssFeedController = e.Parameter as RSSFeedController;
-            RssFeeds.ItemsSource = await rssFeedController.GetFeeds();
-
+            if (e.Parameter is IRSSFeedsManageable manageable)
+            {
+                RssFeeds.ItemsSource = await manageable.GetRssFeedAsync();
+            }
+            else
+            {
+                throw new ArgumentException("NavigationEvenetArgs.Parameter not implemented IRSSFeedsManageable");
+            }
+           
             base.OnNavigatedTo(e);
         }
     }
