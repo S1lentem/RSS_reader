@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using RSSController.Interfaces;
 using Infrastructure.Storages.EF;
 using System.Linq;
+using RSSReader.Source;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,9 +33,18 @@ namespace RSSReader.Pages
 
         public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync()
         {
-            var allFeeds = await feedController.GetFeeds() ?? new List<RSSFeedItem>();
-            cacheRepository.PushInCache(allFeeds.ToArray());
-            return allFeeds;
+            switch (ConnectionManager.GetCurrentConnection())
+            {
+                case TypeConnection.NotСonnection:
+                    return cacheRepository.GetFromCache();
+                case TypeConnection.Mobile:
+                case TypeConnection.WiFi:
+                    var allFeeds = await feedController.GetFeeds() ?? new List<RSSFeedItem>();
+                    cacheRepository.ClearCache();
+                    cacheRepository.PushInCache(allFeeds.ToArray());
+                    return allFeeds;
+            }
+            return null;
         }
 
         public void SetNewsSource(string url) => feedController.URL = url;
