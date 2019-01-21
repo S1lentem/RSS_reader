@@ -1,9 +1,9 @@
 ﻿using RSSController;
 using System.Collections.Generic;
 
-namespace RSSReader.Interfaces
+namespace RSSController.Interfaces
 {
-    interface IRSSFeedsCacheRepository
+    public interface IRSSFeedsCacheRepository
     {
         void PushInCache(params IEnumerable<RSSFeedItem>[] items);
         IEnumerable<RSSFeedItem> GetFromCache();

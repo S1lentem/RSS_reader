@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IRSSFeedsCacheRepository.cs" />
     <Compile Include="StringSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSSFeedController.cs" />
