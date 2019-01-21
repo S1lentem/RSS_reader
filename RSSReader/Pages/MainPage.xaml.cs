@@ -10,6 +10,7 @@ using RSSController.Interfaces;
 using Infrastructure.Storages.EF;
 using System.Linq;
 using RSSReader.Source;
+using RSSController.Models;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 

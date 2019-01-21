@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RSSController;
 using RSSController.Interfaces;
+using RSSController.Models;
 using System;
 using System.Collections.Generic;
 
@@ -44,6 +45,11 @@ namespace Infrastructure.Storages.EF
                 }
                 return allFeeds;
             }
+        }
+
+        public string GetRssFeedsLink()
+        {
+            throw new NotImplementedException();
         }
 
         public void PushInCache(params RSSFeedItem[] items)

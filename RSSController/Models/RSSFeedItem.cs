@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RSSController
+namespace RSSController.Models
 {
     public class RSSFeedItem
     {

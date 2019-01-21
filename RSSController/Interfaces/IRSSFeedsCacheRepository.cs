@@ -1,4 +1,4 @@
-﻿using RSSController;
+﻿using RSSController.Models;
 using System.Collections.Generic;
 
 namespace RSSController.Interfaces
@@ -8,5 +8,6 @@ namespace RSSController.Interfaces
         void PushInCache(params RSSFeedItem[] items);
         IEnumerable<RSSFeedItem> GetFromCache();
         void ClearCache();
+        string GetRssFeedsLink();
     }
 }
