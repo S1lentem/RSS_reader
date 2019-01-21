@@ -5,7 +5,8 @@ namespace RSSController.Interfaces
 {
     public interface IRSSFeedsCacheRepository
     {
-        void PushInCache(params IEnumerable<RSSFeedItem>[] items);
+        void PushInCache(params RSSFeedItem[] items);
         IEnumerable<RSSFeedItem> GetFromCache();
+        void ClearCache();
     }
 }

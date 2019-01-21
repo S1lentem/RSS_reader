@@ -6,6 +6,9 @@ using RSSReader.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using RSSController.Interfaces;
+using Infrastructure.Storages.EF;
+using System.Linq;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,14 +20,22 @@ namespace RSSReader.Pages
     public sealed partial class MainPage : Page, IRSSFeedsManageable 
     {
         private readonly RSSFeedController feedController;
+        private readonly IRSSFeedsCacheRepository cacheRepository;
 
         public MainPage()
         {
             this.InitializeComponent();
+            this.cacheRepository = new SQLiteRSSFeedsCacheRepository();
             this.feedController = new RSSFeedController();
+            
         }
 
-        public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync() => await feedController.GetFeeds();
+        public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync()
+        {
+            var allFeeds = await feedController.GetFeeds() ?? new List<RSSFeedItem>();
+            cacheRepository.PushInCache(allFeeds.ToArray());
+            return allFeeds;
+        }
 
         public void SetNewsSource(string url) => feedController.URL = url;
         
