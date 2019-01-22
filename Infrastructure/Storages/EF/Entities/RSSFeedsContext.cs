@@ -9,10 +9,11 @@ namespace Infrastructure.Storages.EF.Entities
 {
     class RSSFeedsContext : DbContext
     {
-        private readonly string _connectionString = "Filename=Mobile.db";
+        private readonly string _connectionString = "Data Source=cache.db";
 
        
         public DbSet<RSSFeedItemModel> RSSFeedItemModels { get; set; }
+        public DbSet<RSSFeedModel> RSSFeedModels { get; set; }
 
         public RSSFeedsContext() => Database.EnsureCreated();
 

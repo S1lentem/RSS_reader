@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RSSController.Models
 {
-    class RSSFeed
+    public class RSSFeed
     {
         public string Title { get; }
         public string Link { get; }

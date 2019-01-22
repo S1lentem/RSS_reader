@@ -10,14 +10,6 @@ namespace Infrastructure.Storages.EF
 {
     public class SQLiteRSSFeedsCacheRepository : IRSSFeedsCacheRepository
     {
-        public SQLiteRSSFeedsCacheRepository()
-        {
-            using (var context = new RSSFeedsContext())
-            {
-                context.Database.Migrate();
-            }
-        }
-
         public void ClearCache()
         {
             using (var context = new RSSFeedsContext())

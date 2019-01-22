@@ -125,6 +125,7 @@
     <Compile Include="Storages\EF\Entities\RSSFeedModel.cs" />
     <Compile Include="Storages\EF\Entities\RSSFeedsContext.cs" />
     <Compile Include="Storages\EF\SQLiteRSSFeedsCacheRepository.cs" />
+    <Compile Include="Storages\EF\SQLiteRSSFeedsRepository.cs" />
     <EmbeddedResource Include="Properties\Infrastructure.rd.xml" />
   </ItemGroup>
   <ItemGroup>
