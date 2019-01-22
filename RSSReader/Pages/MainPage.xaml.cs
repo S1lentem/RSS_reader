@@ -34,6 +34,8 @@ namespace RSSReader.Pages
             this.feedsRepository = new SQLiteRSSFeedsRepository();
         }
 
+        public string GetCurrentNewsSource() => feedsRepository.GetCurrentRSSFeed()?.Link;
+
         public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync()
         {
             switch (ConnectionManager.GetCurrentConnection())

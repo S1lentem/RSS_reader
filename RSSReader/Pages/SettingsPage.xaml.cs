@@ -49,7 +49,12 @@ namespace RSSReader.Pages
         {
             if (e.Parameter is IRSSFeedsManageable manageable)
             {
-                this.manageable = manageable;  
+                this.manageable = manageable;
+                var url = manageable.GetCurrentNewsSource();
+                if (url != null)
+                {
+                    rssFeedTextBox.Text = url;
+                }
             }
             else
             {
