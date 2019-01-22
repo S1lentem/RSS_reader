@@ -42,5 +42,17 @@ namespace Infrastructure.Storages.EF
                 return model != null ? new RSSFeed(model.Title, model.URL) : null;
             }
         }
+
+        public void SetCurrentByURL(string url)
+        {
+            using (var context = new RSSFeedsContext())
+            {
+                var model = context.RSSFeedModels
+                    .FirstOrDefault(item => item.URL == url) ?? throw new ArgumentException($"{url} not found");
+                model.IsCurrent = true;
+                context.RSSFeedModels.Update(model);
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace RSSController.Interfaces
         void AddRSSFeed(string title, string url, bool isCurrent = false);
         RSSFeed GetCurrentRSSFeed();
         IEnumerable<RSSFeed> GetAllRSSFeeds();
+        void SetCurrentByURL(string url);
     }
 }
