@@ -19,17 +19,19 @@ namespace RSSReader.Pages
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class MainPage : Page, IRSSFeedsManageable 
+    public sealed partial class MainPage : Page, IRSSFeedsManageable
     {
         private readonly RSSFeedController feedController;
+
         private readonly IRSSFeedsCacheRepository cacheRepository;
+        private readonly IRSSFeedsRepository feedsRepository;
 
         public MainPage()
         {
             this.InitializeComponent();
             this.cacheRepository = new SQLiteRSSFeedsCacheRepository();
             this.feedController = new RSSFeedController();
-            
+            this.feedsRepository = new SQLiteRSSFeedsRepository();
         }
 
         public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync()
@@ -40,6 +42,11 @@ namespace RSSReader.Pages
                     return cacheRepository.GetFromCache();
                 case TypeConnection.Mobile:
                 case TypeConnection.WiFi:
+                    var url = feedsRepository.GetCurrentRSSFeed()?.Link;
+                    if (url != null)
+                    {
+                        feedController.URL = url;
+                    }
                     var allFeeds = await feedController.GetFeeds() ?? new List<RSSFeedItem>();
                     cacheRepository.ClearCache();
                     cacheRepository.PushInCache(allFeeds.ToArray());
@@ -48,7 +55,13 @@ namespace RSSReader.Pages
             return null;
         }
 
-        public void SetNewsSource(string url) => feedController.URL = url;
+        public void SetNewsSource(string url)
+        {
+            feedController.URL = url;
+            
+            // Fix title for RSS-Feeds 
+            feedsRepository.AddRSSFeed(null, url, true);
+        }
         
 
         private void SelectItemFromMenu(object sender, SelectionChangedEventArgs e)
@@ -56,7 +69,6 @@ namespace RSSReader.Pages
             if (homeItem.IsSelected)
             {
                 contentFrame.Navigate(typeof(HomePage));
-            
             } 
             else if (newsItem.IsSelected)
             {

@@ -14,12 +14,23 @@ namespace Infrastructure.Storages.EF
         {
             using (var context = new RSSFeedsContext())
             {
-                context.RSSFeedModels.Add(new RSSFeedModel()
+                var model = context.RSSFeedModels
+                    .FirstOrDefault(item => item.Title == title && item.URL == url);
+
+                if (model == null)
                 {
-                    Title = title,
-                    URL = url,
-                    IsCurrent = isCurrent
-                });
+                    context.RSSFeedModels.Add(new RSSFeedModel()
+                    {
+                        Title = title,
+                        URL = url,
+                        IsCurrent = isCurrent
+                    });
+                }
+                else
+                {
+                    model.IsCurrent = isCurrent;
+                    context.RSSFeedModels.Update(model);
+                }
                 context.SaveChanges();
             }
         }
