@@ -15,7 +15,7 @@
             <RowDefinition Height="5*" MinHeight="20"/>
             <RowDefinition Height="95*"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Center" Text="RSS Source" Grid.Row="0"/>
+        <TextBlock HorizontalAlignment="Center" Grid.Row="0" x:Name="rssFeedTitle"/>
          
 
         <ListView x:Name="RssFeeds" RelativePanel.Below="LoadPanel" HorizontalAlignment="Stretch"
