@@ -17,8 +17,16 @@ namespace Infrastructure.Storages.EF
                 var model = context.RSSFeedModels
                     .FirstOrDefault(item => item.Title == title && item.URL == url);
 
+                // Search currrent RSS-feed
+                var current = context.RSSFeedModels.FirstOrDefault(item => item.IsCurrent);
+                if (current != null)
+                {
+                    current.IsCurrent = false;
+                }
+
                 if (model == null)
                 {
+                    
                     context.RSSFeedModels.Add(new RSSFeedModel()
                     {
                         Title = title,
