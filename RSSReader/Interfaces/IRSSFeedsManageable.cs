@@ -9,5 +9,6 @@ namespace RSSReader.Interfaces
         Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync();
         void SetNewsSource(string link);
         string GetCurrentNewsSource();
+        IEnumerable<RSSFeed> GetAllRSSFeeds();
     }
 }

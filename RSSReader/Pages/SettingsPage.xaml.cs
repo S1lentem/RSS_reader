@@ -45,6 +45,13 @@ namespace RSSReader.Pages
             }
         }
 
+        private void SelectRSSFeedsSource(object sender, SelectionChangedEventArgs e)
+        {
+            var source = e.AddedItems[0].ToString();
+            manageable.SetNewsSource(source);
+            
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter is IRSSFeedsManageable manageable)
@@ -55,6 +62,9 @@ namespace RSSReader.Pages
                 {
                     rssFeedTextBox.Text = url;
                 }
+                
+                //allRSSFeedsSources.ItemsSource = manageable.GetAllRSSFeeds()?.Select(item => item.Link);
+               
             }
             else
             {

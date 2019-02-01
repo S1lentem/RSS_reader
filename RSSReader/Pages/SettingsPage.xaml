@@ -20,7 +20,7 @@
             <Button HorizontalAlignment="Stretch" Margin="10">Add </Button>
             <Button HorizontalAlignment="Stretch" Margin="10">Add and make current</Button>
             <TextBlock Margin="10,20,10,0">All RSS-Feeds sources</TextBlock>
-            <ComboBox HorizontalAlignment="Stretch" Margin="10,0,10,0"></ComboBox>
+            <ComboBox HorizontalAlignment="Stretch" Margin="10,0,10,0" x:Name="allRSSFeedsSources" SelectionChanged="SelectRSSFeedsSource"></ComboBox>
         </StackPanel>
        
     </Grid>
