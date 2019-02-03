@@ -2,6 +2,7 @@
 using RSSReader.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -27,10 +28,12 @@ namespace RSSReader.Pages
     public sealed partial class SettingsPage : Page
     {
         private IRSSFeedsManageable manageable;
+        private IEnumerable<string> allLinks;
 
         public SettingsPage()
         {
             this.InitializeComponent();
+            allRSSFeedsSources.ItemsSource = allLinks;
         }
 
         private void RssFeedTextBlockKeyDown(object sender, KeyRoutedEventArgs e)
@@ -62,8 +65,9 @@ namespace RSSReader.Pages
                 {
                     rssFeedTextBox.Text = url;
                 }
-                
-                //allRSSFeedsSources.ItemsSource = manageable.GetAllRSSFeeds()?.Select(item => item.Link);
+
+                allLinks = manageable.GetAllRSSFeeds()
+                    ?.Select(item => item.Link);
                
             }
             else

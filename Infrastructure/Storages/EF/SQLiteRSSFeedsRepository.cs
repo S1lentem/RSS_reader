@@ -45,11 +45,14 @@ namespace Infrastructure.Storages.EF
 
         public IEnumerable<RSSFeed> GetAllRSSFeeds()
         {
+            IEnumerable<RSSFeed> allRssFeeds;
             using (var context = new RSSFeedsContext())
             {
-                return context.RSSFeedModels
+               
+                allRssFeeds = context.RSSFeedModels
                     .Select(model => new RSSFeed(model.Title, model.URL));
             }
+            return allRssFeeds;
         }
 
         public RSSFeed GetCurrentRSSFeed()
