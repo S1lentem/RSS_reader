@@ -10,5 +10,6 @@ namespace RSSReader.Interfaces
         void SetNewsSource(string link);
         string GetCurrentNewsSource();
         IEnumerable<RSSFeed> GetAllRSSFeeds();
+        //void AddFeed();
     }
 }

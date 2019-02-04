@@ -1,4 +1,5 @@
 ﻿using RSSController;
+using RSSController.Models;
 using RSSReader.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,12 +29,16 @@ namespace RSSReader.Pages
     public sealed partial class SettingsPage : Page
     {
         private IRSSFeedsManageable manageable;
-        private IEnumerable<string> allLinks;
 
         public SettingsPage()
         {
             this.InitializeComponent();
-            allRSSFeedsSources.ItemsSource = allLinks;
+        }
+
+        private void AddFeed(object sender, EventArgs e)
+        {
+            var link = rssFeedTextBox.Text.CreateLink();
+            
         }
 
         private void RssFeedTextBlockKeyDown(object sender, KeyRoutedEventArgs e)
@@ -52,28 +57,34 @@ namespace RSSReader.Pages
         {
             var source = e.AddedItems[0].ToString();
             manageable.SetNewsSource(source);
-            
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+       
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+
+            string url = null;
             if (e.Parameter is IRSSFeedsManageable manageable)
             {
-                this.manageable = manageable;
-                var url = manageable.GetCurrentNewsSource();
+                await Task.Run(() =>
+               {
+                   this.manageable = manageable;
+                   url = manageable.GetCurrentNewsSource();
+
+               });
                 if (url != null)
                 {
                     rssFeedTextBox.Text = url;
+                    allRSSFeedsSources.ItemsSource = manageable.GetAllRSSFeeds().Select(item => item.Link);
                 }
-
-                allLinks = manageable.GetAllRSSFeeds()
-                    ?.Select(item => item.Link);
-               
             }
+
             else
             {
                 throw new ArgumentException("NavigationEvenetArgs.Parameter not implemented IRSSFeedsManageable");
             }
+          
             base.OnNavigatedTo(e);
         }
 
