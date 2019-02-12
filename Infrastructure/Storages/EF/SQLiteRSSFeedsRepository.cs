@@ -1,15 +1,25 @@
 ﻿using Infrastructure.Storages.EF.Entities;
+using Microsoft.EntityFrameworkCore;
 using RSSController.Interfaces;
 using RSSController.Models;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Storages.EF
 {
     public class SQLiteRSSFeedsRepository : IRSSFeedsRepository
     {
+        public SQLiteRSSFeedsRepository()
+        {
+            Task.Run(() =>
+            {
+                using (var context = new RSSFeedsContext()) { }
+            });
+        }
+
         public void AddRSSFeed(string title, string url, bool isCurrent=false)
         {
             using (var context = new RSSFeedsContext())
@@ -53,14 +63,17 @@ namespace Infrastructure.Storages.EF
             
         }
 
+
         public RSSFeed GetCurrentRSSFeed()
         {
+            RSSFeedModel model = null;
             using (var context = new RSSFeedsContext())
             {
-                var model = context.RSSFeedModels
+
+                model = context.RSSFeedModels
                     .FirstOrDefault(item => item.IsCurrent);
-                return model != null ? new RSSFeed(model.Title, model.URL) : null;
             }
+            return model != null ? new RSSFeed(model.Title, model.URL) : null;
         }
 
         public void SetCurrentByURL(string url)

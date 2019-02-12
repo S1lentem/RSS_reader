@@ -36,9 +36,13 @@ namespace RSSReader.Pages
 
         public IEnumerable<RSSFeed> GetAllRSSFeeds() => feedsRepository.GetAllRSSFeeds();
 
-        public string GetCurrentNewsSource() => feedsRepository.GetCurrentRSSFeed()?.Link;
+        public string GetCurrentNewsSource() {
+            var feed = feedsRepository.GetCurrentRSSFeed();
+            return feed?.Link;
+        }
 
-        public async Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync()
+
+        public async Task<IEnumerable<RSSFeedItem>> GetRssFeeds()
         {
             switch (ConnectionManager.GetCurrentConnection())
             {
@@ -46,7 +50,8 @@ namespace RSSReader.Pages
                     return cacheRepository.GetFromCache();
                 case TypeConnection.Mobile:
                 case TypeConnection.WiFi:
-                    var url = feedsRepository.GetCurrentRSSFeed()?.Link;
+                    var rssFeed = feedsRepository.GetCurrentRSSFeed();
+                    var url = rssFeed?.Link;
                     if (url != null)
                     {
                         feedController.URL = url;

@@ -5,6 +5,7 @@ using RSSController.Interfaces;
 using RSSController.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Storages.EF
 {
@@ -37,11 +38,6 @@ namespace Infrastructure.Storages.EF
                 }
                 return allFeeds;
             }
-        }
-
-        public string GetRssFeedsLink()
-        {
-            throw new NotImplementedException();
         }
 
         public void PushInCache(params RSSFeedItem[] items)

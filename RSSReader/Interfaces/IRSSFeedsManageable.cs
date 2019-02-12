@@ -6,7 +6,7 @@ namespace RSSReader.Interfaces
 {
     interface IRSSFeedsManageable
     {
-        Task<IEnumerable<RSSFeedItem>> GetRssFeedAsync();
+        Task<IEnumerable<RSSFeedItem>> GetRssFeeds();
         void SetNewsSource(string link);
         string GetCurrentNewsSource();
         IEnumerable<RSSFeed> GetAllRSSFeeds();

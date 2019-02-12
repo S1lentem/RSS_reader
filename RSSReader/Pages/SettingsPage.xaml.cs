@@ -61,22 +61,18 @@ namespace RSSReader.Pages
 
        
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
             string url = null;
             if (e.Parameter is IRSSFeedsManageable manageable)
             {
-                await Task.Run(() =>
-               {
-                   this.manageable = manageable;
-                   url = manageable.GetCurrentNewsSource();
-
-               });
+                this.manageable = manageable;
+                url = manageable.GetCurrentNewsSource();
                 if (url != null)
                 {
                     rssFeedTextBox.Text = url;
-                    allRSSFeedsSources.ItemsSource = manageable.GetAllRSSFeeds().Select(item => item.Link);
+                    //allRSSFeedsSources.ItemsSource = manageable.GetAllRSSFeeds().Select(item => item.Link);
                 }
             }
 
