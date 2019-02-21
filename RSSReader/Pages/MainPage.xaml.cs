@@ -2,7 +2,6 @@
 using Windows.UI.Xaml.Controls;
 
 using RSSController;
-using RSSReader.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +10,8 @@ using Infrastructure.Storages.EF;
 using System.Linq;
 using RSSReader.Source;
 using RSSController.Models;
+using System;
+using RSSReader.Interfaces;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,21 +35,16 @@ namespace RSSReader.Pages
             this.feedsRepository = new SQLiteRSSFeedsRepository();
         }
 
-        public IEnumerable<RSSFeed> GetAllRSSFeeds() => feedsRepository.GetAllRSSFeeds();
+      
 
-        public string GetCurrentNewsSource() {
-            var feed = feedsRepository.GetCurrentRSSFeed();
-            return feed?.Link;
-        }
-
-
-        public async Task<IEnumerable<RSSFeedItem>> GetRssFeeds()
+        public async Task<IEnumerable<RSSFeedItem>> GetRSSFeedItems()
         {
             switch (ConnectionManager.GetCurrentConnection())
             {
                 case TypeConnection.NotСonnection:
                     return cacheRepository.GetFromCache();
                 case TypeConnection.Mobile:
+                    // TO DO: Add logic 
                 case TypeConnection.WiFi:
                     var rssFeed = feedsRepository.GetCurrentRSSFeed();
                     var url = rssFeed?.Link;
@@ -64,15 +60,7 @@ namespace RSSReader.Pages
             return null;
         }
 
-        public void SetNewsSource(string url)
-        {
-            feedController.URL = url;
-            
-            // Fix title for RSS-Feeds 
-            feedsRepository.AddRSSFeed(null, url, true);
-        }
         
-
         private void SelectItemFromMenu(object sender, SelectionChangedEventArgs e)
         {
             if (homeItem.IsSelected)
@@ -85,7 +73,7 @@ namespace RSSReader.Pages
             }
             else if (settingsItem.IsSelected)
             {
-                contentFrame.Navigate(typeof(SettingsPage), this);
+                contentFrame.Navigate(typeof(SettingsPage), feedsRepository);
             }
             else if (aboutItem.IsSelected)
             {

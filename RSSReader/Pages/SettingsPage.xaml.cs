@@ -1,4 +1,5 @@
 ﻿using RSSController;
+using RSSController.Interfaces;
 using RSSController.Models;
 using RSSReader.Interfaces;
 using System;
@@ -28,7 +29,7 @@ namespace RSSReader.Pages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        private IRSSFeedsManageable manageable;
+        private IRSSFeedsRepository feedsRepository;
 
         public SettingsPage()
         {
@@ -45,7 +46,7 @@ namespace RSSReader.Pages
         {
             if (e.Key == VirtualKey.Enter)
             {
-                manageable.SetNewsSource(rssFeedTextBox.Text.CreateLink());
+                feedsRepository.SetCurrentByURL(rssFeedTextBox.Text.CreateLink());
 
                 // Removes keyboard when pressed enter
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().CoreWindow.IsInputEnabled = false;
@@ -55,20 +56,30 @@ namespace RSSReader.Pages
 
         private void SelectRSSFeedsSource(object sender, SelectionChangedEventArgs e)
         {
-            var source = e.AddedItems[0].ToString();
-            manageable.SetNewsSource(source);
+            var link = e.AddedItems[0].ToString();
+            feedsRepository.SetCurrentByURL(link);
         }
 
-       
+        public async void AddLinkForRssFeeds(object sender, RoutedEventArgs e)
+        {
+            var link = rssFeedTextBox.Text.CreateLink();      
+            var feed = await feedsRepository.CreateRSSFeedFromLink(link);
+            if (feed != null)
+            {
+                feedsRepository.AddRSSFeed(feed.Title, feed.Link);
+            }
+        }
+
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
             string url = null;
-            if (e.Parameter is IRSSFeedsManageable manageable)
+            if (e.Parameter is IRSSFeedsRepository repository)
             {
-                this.manageable = manageable;
-                url = manageable.GetCurrentNewsSource();
+                this.feedsRepository = repository;
+                url = repository.GetCurrentRSSFeed().Link; 
                 if (url != null)
                 {
                     rssFeedTextBox.Text = url;

@@ -29,7 +29,7 @@ namespace RSSReader
         {
             if (e.Parameter is IRSSFeedsManageable manageable)
             {
-                RssFeeds.ItemsSource = await manageable.GetRssFeeds();
+                RssFeeds.ItemsSource = await manageable.GetRSSFeedItems();
             }
             else
             {

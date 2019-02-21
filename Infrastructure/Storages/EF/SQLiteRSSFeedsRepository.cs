@@ -6,18 +6,37 @@ using RSSController.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Infrastructure.Storages.EF
 {
     public class SQLiteRSSFeedsRepository : IRSSFeedsRepository
     {
+        private readonly string channelTag = "channel";
+        private readonly string titleTag = "title";
+        private readonly string linkTag = "link";
+
         public SQLiteRSSFeedsRepository()
         {
             Task.Run(() =>
             {
                 using (var context = new RSSFeedsContext()) { }
             });
+        }
+
+        // To do fix invalid link or XML
+        public async Task<RSSFeed> CreateRSSFeedFromLink(string rssFeedLink)
+        {
+            var client = new HttpClient();
+
+            var document = XDocument.Load(await client.GetStreamAsync(rssFeedLink));
+            var channelSection = document.Element(channelTag);
+
+            var title = channelSection.Element(titleTag).Value;
+            var link = channelSection.Element(linkTag).Value;
+            return new RSSFeed(title, link);
         }
 
         public void AddRSSFeed(string title, string url, bool isCurrent=false)
@@ -62,6 +81,7 @@ namespace Infrastructure.Storages.EF
             }
             
         }
+
 
 
         public RSSFeed GetCurrentRSSFeed()

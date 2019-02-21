@@ -1,15 +1,14 @@
 ﻿using RSSController.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RSSReader.Interfaces
 {
-    interface IRSSFeedsManageable
+    public interface IRSSFeedsManageable
     {
-        Task<IEnumerable<RSSFeedItem>> GetRssFeeds();
-        void SetNewsSource(string link);
-        string GetCurrentNewsSource();
-        IEnumerable<RSSFeed> GetAllRSSFeeds();
-        //void AddFeed();
+        Task<IEnumerable<RSSFeedItem>> GetRSSFeedItems();
     }
 }
