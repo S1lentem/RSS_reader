@@ -2,6 +2,7 @@
 using RSSController.Interfaces;
 using RSSController.Models;
 using RSSReader.Interfaces;
+using RSSReader.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +31,7 @@ namespace RSSReader.Pages
     public sealed partial class SettingsPage : Page
     {
         private IRSSFeedsRepository feedsRepository;
+
 
         public SettingsPage()
         {
@@ -74,17 +76,13 @@ namespace RSSReader.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
-            string url = null;
             if (e.Parameter is IRSSFeedsRepository repository)
             {
-                this.feedsRepository = repository;
-                url = repository.GetCurrentRSSFeed().Link; 
-                if (url != null)
-                {
-                    rssFeedTextBox.Text = url;
-                    //allRSSFeedsSources.ItemsSource = manageable.GetAllRSSFeeds().Select(item => item.Link);
-                }
+                feedsRepository = repository;
+                var allRSSFeeds = repository.GetAllRSSFeeds();
+                var currentRSSFeed = repository.GetCurrentRSSFeed();
+
+                DataContext = new SettingsViewModel(allRSSFeeds, currentRSSFeed);
             }
 
             else

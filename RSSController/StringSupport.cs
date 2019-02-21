@@ -23,5 +23,4 @@ namespace RSSController
 
         public static string CreateLink(this string url) => !url.StartsWith(urlPrefix) ? urlPrefix + url : url;
     } 
-
 }

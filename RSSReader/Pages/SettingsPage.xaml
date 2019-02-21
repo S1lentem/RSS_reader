@@ -16,11 +16,21 @@
         <TextBlock FontSize="26" FontWeight="Bold" FontStyle="Italic" HorizontalAlignment="Center" Grid.Row="0">Settings</TextBlock>
         <StackPanel Grid.Row="1">
             <TextBlock Margin="10,0, 10,0">RSS-Feeds Source</TextBlock>
-            <TextBox Name="rssFeedTextBox" KeyDown="RssFeedTextBlockKeyDown" Margin="10,0,10,0"/>
+            <TextBox Name="rssFeedTextBox" KeyDown="RssFeedTextBlockKeyDown" Margin="10,0,10,0"
+                     Text="{Binding SelectedFeed.Link}"/>
             <Button HorizontalAlignment="Stretch" Margin="10" Click="AddLinkForRssFeeds">Add </Button>
             <Button HorizontalAlignment="Stretch" Margin="10">Add and make current</Button>
             <TextBlock Margin="10,20,10,0">All RSS-Feeds sources</TextBlock>
-            <ComboBox HorizontalAlignment="Stretch" Margin="10,0,10,0" x:Name="allRSSFeedsSources"/>
+            <ComboBox HorizontalAlignment="Stretch" Margin="10,0,10,0" x:Name="allRSSFeedsSources" 
+                      ItemsSource="{Binding AllFeeds}" SelectedItem="{Binding SelectedFeed}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <TextBlock Text="{Binding Link}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
         </StackPanel>
        
